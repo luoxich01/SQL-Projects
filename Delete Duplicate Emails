@@ -17,3 +17,18 @@ For example, after running your query, the above Person table should have the fo
 | 2  | bob@example.com  |
 +----+------------------+
 
+# Write your MySQL query statement below
+select * from
+from Person
+where id in (
+    SELECT min(Id) as Id
+    FROM Person
+    group by Email
+);
+
+select a.Id, a.Email
+from (
+    select *, row_number() over (partition by Email) as rn
+    from Person
+) a 
+where a.rn = 1;
